@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "name": "Hostel Ledger",
+    "slug": "hostel-ledger",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}
