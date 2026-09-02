@@ -63,8 +63,8 @@ export default function App() {
   // Calculate days in active month
   const daysInCurrentMonth = new Date(year, month + 1, 0).getDate();
   
-  // Dynamic daily rate: ₹150 for 30-day months, ₹145 for 31-day months (or custom logic)
-  const dailyRate = daysInCurrentMonth === 30 ? 150 : 145;
+  // Dynamic daily rate based on 4500 total divided by total days in the month
+  const dailyRate = Number((4500 / daysInCurrentMonth).toFixed(2));
 
   const daysArray = Array.from({ length: daysInCurrentMonth }, (_, i) => {
     const dayNum = i + 1;
@@ -90,7 +90,7 @@ export default function App() {
     if (attendance[item.dateKey]?.status === 'Absent') totalAbsent++;
   });
 
-  const totalMoney = totalPresent * dailyRate;
+  const totalMoney = (totalPresent * dailyRate).toFixed(2);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -225,4 +225,3 @@ const styles = StyleSheet.create({
   btnText: { color: '#fff', fontWeight: 'bold', fontSize: 14 },
   cancelBtn: { marginTop: 12, alignItems: 'center', padding: 8 }
 });
-  
