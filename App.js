@@ -60,6 +60,25 @@ export default function App() {
     }
   };
 
+  // Function to delete/clear a specific date's entry
+  const clearStatus = async () => {
+    const { error } = await supabase
+      .from('attendance')
+      .delete()
+      .eq('date_key', selectedDateKey);
+
+    if (error) {
+      Alert.alert('Error clearing', error.message);
+    } else {
+      setAttendance(prev => {
+        const updated = { ...prev };
+        delete updated[selectedDateKey];
+        return updated;
+      });
+      setModalVisible(false);
+    }
+  };
+
   // Calculate days in active month
   const daysInCurrentMonth = new Date(year, month + 1, 0).getDate();
   
@@ -177,6 +196,11 @@ export default function App() {
               </TouchableOpacity>
             </View>
 
+            {/* Clear / Delete Entry Button */}
+            <TouchableOpacity style={styles.deleteBtn} onPress={clearStatus}>
+              <Text style={styles.deleteBtnText}>Remove Entry</Text>
+            </TouchableOpacity>
+
             <TouchableOpacity style={styles.cancelBtn} onPress={() => setModalVisible(false)}>
               <Text style={{ color: '#666', fontWeight: '600' }}>Cancel</Text>
             </TouchableOpacity>
@@ -220,8 +244,13 @@ const styles = StyleSheet.create({
   modalContent: { width: '100%', maxWidth: 340, backgroundColor: '#fff', padding: 20, borderRadius: 12, elevation: 5 },
   modalTitle: { fontSize: 16, fontWeight: 'bold', marginBottom: 15, textAlign: 'center', color: '#333' },
   input: { backgroundColor: '#F9F9F9', padding: 12, borderRadius: 8, marginBottom: 15, borderWidth: 1, borderColor: '#E0E0E0', fontSize: 14 },
-  modalButtons: { flexDirection: 'row', gap: 10 },
+  modalButtons: { flexDirection: 'row', gap: 10, marginBottom: 10 },
   actionBtn: { flex: 1, padding: 12, borderRadius: 8, alignItems: 'center' },
   btnText: { color: '#fff', fontWeight: 'bold', fontSize: 14 },
-  cancelBtn: { marginTop: 12, alignItems: 'center', padding: 8 }
+  
+  deleteBtn: { backgroundColor: '#ffebee', padding: 12, borderRadius: 8, alignItems: 'center', borderWidth: 1, borderColor: '#ffcdd2', marginBottom: 5 },
+  deleteBtnText: { color: '#c62828', fontWeight: 'bold', fontSize: 14 },
+  
+  cancelBtn: { marginTop: 8, alignItems: 'center', padding: 8 }
 });
+        
